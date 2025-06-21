@@ -187,7 +187,7 @@ function drawPieChart() {
         data: data,
         backgroundColor: ['#4CAF50', '#FF9800', '#2196F3']
       }]
-    },
+    }
     options: {
       responsive: true,
       plugins: {
