@@ -92,6 +92,7 @@ function updateTotals() {
   document.getElementById('totalCost').textContent = totalCost.toFixed(2);
   document.getElementById('costPerPortion').textContent = costPerPortion.toFixed(2);
   document.getElementById('suggestedPrice').textContent = suggestedPrice.toFixed(2);
+  updateDishSummary();
 }
 
 function exportToCSV() {
@@ -118,3 +119,80 @@ document.addEventListener('DOMContentLoaded', () => {
   addIngredientRow();
   addSubRecipeRow();
 });
+
+function updateDishSummary() {
+  const salePrice = parseFloat(document.getElementById("estSalePrice").value) || 0;
+  const totalCost = parseFloat(document.getElementById("totalCost").textContent) || 0;
+
+  const profit = salePrice - totalCost;
+  const margin = salePrice > 0 ? ((profit / salePrice) * 100).toFixed(2) : 0;
+
+  document.getElementById("summaryTotalCost").textContent = totalCost.toFixed(2);
+  document.getElementById("netProfit").textContent = profit.toFixed(2);
+  document.getElementById("costMargin").textContent = `${margin}%`;
+
+  // VAT Breakdown
+  const vat = salePrice * 0.12;
+  const vatExcluded = salePrice - vat;
+
+  document.getElementById("vatExcluded").textContent = vatExcluded.toFixed(2);
+  document.getElementById("vatAmount").textContent = vat.toFixed(2);
+
+  // Discount Calculations (PWD/Senior)
+  const discount = salePrice * 0.20;
+  const discountedPrice = salePrice - discount;
+  const profitAfterDiscount = discountedPrice - totalCost;
+  const profitDiff = profit - profitAfterDiscount;
+
+  document.getElementById("discountValue").textContent = discount.toFixed(2);
+  document.getElementById("discountedPrice").textContent = discountedPrice.toFixed(2);
+  document.getElementById("profitAfterDiscount").textContent = profitAfterDiscount.toFixed(2);
+  document.getElementById("profitDifference").textContent = profitDiff.toFixed(2);
+
+  drawPieChart();
+}
+
+function drawPieChart() {
+  const ingredientRows = document.getElementById('ingredientsBody').rows;
+  const subRecipeRows = document.getElementById('subRecipesBody').rows;
+
+  let ingredientTotal = 0;
+  let subRecipeTotal = 0;
+  let overhead = 0;
+
+  [...ingredientRows].forEach(row => {
+    const cost = parseFloat(row.cells[5]?.textContent) || 0;
+    ingredientTotal += cost;
+  });
+
+  [...subRecipeRows].forEach(row => {
+    const cost = parseFloat(row.cells[4]?.textContent) || 0;
+    subRecipeTotal += cost;
+  });
+
+  overhead +=
+    (parseFloat(document.getElementById('laborCost').value) || 0) +
+    (parseFloat(document.getElementById('utilitiesCost').value) || 0) +
+    (parseFloat(document.getElementById('packagingCost').value) || 0);
+
+  const data = [ingredientTotal, subRecipeTotal, overhead];
+  const ctx = document.getElementById('pieChart').getContext('2d');
+
+  if (window.pieChart) window.pieChart.destroy();
+  window.pieChart = new Chart(ctx, {
+    type: 'pie',
+    data:
+      labels: ['Ingredients', 'Sub-Recipes', 'Overhead'],
+      datasets: [{
+        data: data,
+        backgroundColor: ['#4CAF50', '#FF9800', '#2196F3']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+}
