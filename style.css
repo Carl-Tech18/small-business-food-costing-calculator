@@ -1,113 +1,102 @@
 body {
-  font-family: Arial, sans-serif;
-  margin: 2rem;
-  background-color: #f9f9f9;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f7f9fc;
   color: #333;
 }
 
-h1, h2 {
+.container {
+  max-width: 960px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+h1 {
   text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
 }
 
 section {
-  margin-bottom: 2rem;
+  margin-bottom: 25px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
 }
 
-.scaling {
-  text-align: center;
-  margin-bottom: 1rem;
+label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 500;
 }
 
-input[type="number"], input[type="text"] {
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="file"] {
   width: 100%;
-  padding: 0.5rem;
+  padding: 6px 10px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   box-sizing: border-box;
 }
 
-button {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1rem;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  text-align: center;
-}
-
-th {
-  background-color: #c8e6c9;
-}
-
-.summary label {
-  display: block;
-  margin: 0.5rem 0;
-}
-
-.summary input {
-  width: 200px;
-  margin-left: 0.5rem;
-}
-
-.result {
-  background-color: #e8f5e9;
-  padding: 1rem;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.actions {
-  text-align: center;
-  margin-top: 2rem;
-}
-
-@media print {
-  button, .actions {
-    display: none;
-  }
-  body {
-    background-color: white;
-  }
-  
-#dish-summary,
-#cost-chart,
-#vat-discount {
-  border: 2px dashed #4CAF50;
-  padding: 16px;
-  margin: 10px auto;
-  background: #f4fff4;
-  border-radius: 12px;
-  max-width: 600px;
-}
-
-#dish-summary label,
-#vat-discount label {
-  display: block;
-  margin: 8px 0;
-}
-
-#cost-chart {
-  text-align: center;
-}
-
-#cost-chart canvas {
+#photoPreview {
   margin-top: 10px;
   max-width: 100%;
+  height: auto;
+  text-align: center;
 }
+
+#photoPreview img {
+  max-width: 200px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.results p {
+  margin: 6px 0;
+  font-weight: 500;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.buttons button {
+  background: #007bff;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.buttons button:hover {
+  background: #0056b3;
+}
+
+.chart-section {
+  text-align: center;
+  margin-top: 15px;
+}
+
+@media (max-width: 600px) {
+  .buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
