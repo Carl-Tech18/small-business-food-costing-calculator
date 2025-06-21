@@ -143,12 +143,6 @@ function updateDishSummary() {
   drawPieChart(totalCost);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  addIngredientRow();
-  addSubRecipeRow();
-
-  const dishPhotoInput = document.getElementById("dishPhoto");
-  
 function drawPieChart(totalCost) {
   const estPrice = getValidNumber(document.getElementById("estSalePrice"));
   const profit = estPrice - totalCost;
@@ -174,20 +168,10 @@ function drawPieChart(totalCost) {
     }
   });
 }
-// Then, in DOMContentLoaded:
-["estSalePrice", "targetMargin"].forEach(id => {
-  document.getElementById(id).addEventListener("input", updateDishSummary);
-  });
-
-  document.getElementById('ingredientsBody').addEventListener('input', function (e) {
-  if (e.target.tagName === "INPUT") applyBatchScaling();
-});
-  
-document.getElementById('batchScale').addEventListener('input', applyBatchScaling);
 
 function resetAll() {
   document.querySelectorAll("input").forEach(i => (i.value = ""));
-  
+
   document.getElementById("autoSuggest").textContent = "₱0.00";
   document.getElementById("photoPreview").innerHTML = "";
   dishImageBase64 = "";
@@ -199,10 +183,10 @@ function resetAll() {
   "discountValue", "discountedPrice", "profitAfterDiscount", "profitDifference"
 ].forEach(id => document.getElementById(id).textContent = "0.00");
 
-document.getElementById('ingredientsBody').innerHTML = "";
-document.getElementById('subRecipesBody').innerHTML = "";
-addIngredientRow();
-addSubRecipeRow();
+  document.getElementById('ingredientsBody').innerHTML = "";
+  document.getElementById('subRecipesBody').innerHTML = "";
+  addIngredientRow();
+  addSubRecipeRow();
 }
 
 function saveToLocal() {
@@ -288,3 +272,45 @@ function exportPDF() {
     alert("Failed to export PDF: " + e.message);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  addIngredientRow();
+  addSubRecipeRow();
+
+  // Button event listeners (all platforms, including Android)
+  document.getElementById('addIngredientBtn').addEventListener('click', addIngredientRow);
+  document.getElementById('addSubRecipeBtn').addEventListener('click', addSubRecipeRow);
+  document.getElementById('addIngredientBtn2').addEventListener('click', addIngredientRow);
+
+  document.getElementById('resetAllBtn').addEventListener('click', resetAll);
+  document.getElementById('saveToLocalBtn').addEventListener('click', saveToLocal);
+  document.getElementById('loadFromLocalBtn').addEventListener('click', loadFromLocal);
+  document.getElementById('exportPDFBtn').addEventListener('click', exportPDF);
+
+  // Listen for batch scaling and other input events
+  document.getElementById('batchScale').addEventListener('input', applyBatchScaling);
+
+  ["estSalePrice", "targetMargin"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateDishSummary);
+  });
+
+  document.getElementById('ingredientsBody').addEventListener('input', function (e) {
+    if (e.target.tagName === "INPUT") applyBatchScaling();
+  });
+
+  // Optional: Photo preview logic (unchanged)
+  const dishPhotoInput = document.getElementById("dishPhoto");
+  if (dishPhotoInput) {
+    dishPhotoInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          dishImageBase64 = e.target.result;
+          document.getElementById("photoPreview").innerHTML = `<img src="${dishImageBase64}" alt="Dish Photo" />`;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+});
