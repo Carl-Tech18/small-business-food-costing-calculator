@@ -143,25 +143,6 @@ function updateDishSummary() {
   drawPieChart(totalCost);
 }
 
-    type: "pie",
-    data: {
-      labels: ["Cost", "Profit"],
-      datasets: [
-        {
-          data: [totalCost, profit > 0 ? profit : 0],
-          backgroundColor: ["#f44336", "#4caf50"]
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: "bottom" }
-      }
-    }
-  });
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   addIngredientRow();
   addSubRecipeRow();
@@ -213,13 +194,15 @@ function resetAll() {
   if (window.pieChart) window.pieChart.destroy();
 
   // Clear and reset tables
-  documen[
+ [
   "totalCost", "costMargin", "netProfit", "vatAmount", "vatExcluded",
   "discountValue", "discountedPrice", "profitAfterDiscount", "profitDifference"
-].forEach(id => document.getElementById(id).textContent = "0.00");t.getElementById('ingredientsBody').innerHTML = "";
-  document.getElementById('subRecipesBody').innerHTML = "";
-  addIngredientRow();
-  addSubRecipeRow();
+].forEach(id => document.getElementById(id).textContent = "0.00");
+
+document.getElementById('ingredientsBody').innerHTML = "";
+document.getElementById('subRecipesBody').innerHTML = "";
+addIngredientRow();
+addSubRecipeRow();
 }
 
 function saveToLocal() {
