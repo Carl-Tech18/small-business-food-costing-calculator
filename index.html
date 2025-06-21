@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Costing Calculator v1.0</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Food Costing Calculator v1.0</h1>
+
+    <table id="ingredientsTable">
+        <thead>
+            <tr>
+                <th>Ingredient</th>
+                <th>Unit</th>
+                <th>Unit Cost</th>
+                <th>Quantity Used</th>
+                <th>Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" value="Chicken"></td>
+                <td><input type="text" value="kg"></td>
+                <td><input type="number" value="150" onchange="updateCosts()"></td>
+                <td><input type="number" value="0.3" onchange="updateCosts()"></td>
+                <td><span class="cost">0</span></td>
+            </tr>
+            <tr>
+                <td><input type="text" value="Onion"></td>
+                <td><input type="text" value="pc"></td>
+                <td><input type="number" value="5" onchange="updateCosts()"></td>
+                <td><input type="number" value="2" onchange="updateCosts()"></td>
+                <td><span class="cost">0</span></td>
+            </tr>
+            <tr>
+                <td><input type="text" value="Garlic"></td>
+                <td><input type="text" value="bulb"></td>
+                <td><input type="number" value="8" onchange="updateCosts()"></td>
+                <td><input type="number" value="1" onchange="updateCosts()"></td>
+                <td><span class="cost">0</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <div><label>Total Ingredient Cost:</label> <input type="text" id="ingredientTotal" readonly></div>
+        <div><label>Packaging Cost:</label> <input type="number" id="packaging" value="5" onchange="updateFinal()"></div>
+        <div><label>Other Cost (Gas, etc.):</label> <input type="number" id="others" value="10" onchange="updateFinal()"></div>
+        <div><label>Total Cost:</label> <input type="text" id="totalCost" readonly></div>
+        <div><label>Desired Profit:</label> <input type="number" id="profit" value="30" onchange="updateFinal()"></div>
+        <div class="total">Selling Price: ₱<span id="sellingPrice">0</span></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
