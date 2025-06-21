@@ -19,7 +19,52 @@
       <div id="photoPreview"></div>
     </section>
 
-    <!-- Ingredient and Sub-Recipe Tables (To be added in HTML build) -->
+    <!-- Ingredient and Sub-Recipe Tables -->
+<section>
+  <h3>Ingredients</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Ingredient</th>
+        <th>Unit</th>
+        <th>Unit Cost</th>
+        <th>Qty</th>
+        <th>Converted Qty</th>
+        <th>Total Cost</th>
+      </tr>
+    </thead>
+    <tbody id="ingredientsBody"></tbody>
+  </table>
+  <button onclick="addIngredientRow()">Add Ingredient</button>
+</section>
+
+<section>
+  <h3>Sub-Recipes</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Sub-Recipe</th>
+        <th>Unit</th>
+        <th>Unit Cost</th>
+        <th>Qty</th>
+        <th>Total Cost</th>
+      </tr>
+    </thead>
+    <tbody id="subRecipesBody"></tbody>
+  </table>
+  <button onclick="addSubRecipeRow()">Add Sub-Recipe</button>
+</section>
+
+<section>
+  <h3>Overhead & Yield</h3>
+  <label>Labor Cost: <input type="number" id="laborCost" /></label>
+  <label>Utilities Cost: <input type="number" id="utilitiesCost" /></label>
+  <label>Packaging Cost: <input type="number" id="packagingCost" /></label>
+  <label>Yield (Portions): <input type="number" id="yieldCount" /></label>
+  <label>Profit Per Portion: <input type="number" id="profitPerPortion" /></label>
+  <label>Batch Scale: <input type="number" id="batchScale" value="1" onchange="applyBatchScaling()" /></label>
+</section>
+
 
     <section class="pricing">
       <label>Estimated Sale Price: <input type="number" id="estSalePrice" /></label>
