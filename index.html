@@ -1,102 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Food Costing Calculator v2.0</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Costing Calculator v2.2</title>
+  <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <h1>Food Costing Calculator v2.0</h1>
-  
-  <section id="dish-summary">
-  <h2>Dish Summary</h2>
-  <label>Date: <input type="date" id="dishDate"></label>
-  <label>Dish Name: <input type="text" id="dishName"></label>
-  <label>Estimated Sale Price: ₱<input type="number" id="estSalePrice" step="0.01" onchange="updateDishSummary()"></label>
-  <p>Total Cost: ₱<span id="summaryTotalCost">0.00</span></p>
-  <p>Cost Margin: <span id="costMargin">0%</span></p>
-  <p>Net Profit: ₱<span id="netProfit">0.00</span></p>
-</section>
+  <div class="container">
+    <h1>Food Costing Calculator v2.2</h1>
 
-<section id="cost-chart">
-  <h2>Cost Distribution</h2>
-  <canvas id="pieChart" width="250" height="250"></canvas>
-</section>
+    <section class="dish-meta">
+      <label>Date: <input type="date" id="dishDate" /></label>
+      <label>Dish Name: <input type="text" id="dishName" /></label>
+      <label>Upload Dish Photo: <input type="file" id="dishPhoto" accept="image/*" /></label>
+      <div id="photoPreview"></div>
+    </section>
 
-<section id="vat-discount">
-  <h2>VAT & Discounts</h2>
-  <label>Target Margin (%): <input type="number" id="targetMargin" value="60" onchange="updateDishSummary()"></label>
-  <p>VAT Excluded (12%): ₱<span id="vatExcluded">0.00</span></p>
-  <p>VAT Amount: ₱<span id="vatAmount">0.00</span></p>
-  <p>Discount (20%): ₱<span id="discountValue">0.00</span></p>
-  <p>Discounted Price: ₱<span id="discountedPrice">0.00</span></p>
-  <p>Profit After Discount: ₱<span id="profitAfterDiscount">0.00</span></p>
-  <p>Difference vs Regular Profit: ₱<span id="profitDifference">0.00</span></p>
-</section>
-  
-  <section class="scaling">
-    <label for="batchScale">Batch Multiplier:</label>
-    <input type="number" id="batchScale" value="1" step="0.1" onchange="applyBatchScaling()">
-  </section>
+    <!-- Ingredient and Sub-Recipe Tables (To be added in HTML build) -->
 
-  <section>
-    <h2>Main Ingredients</h2>
-    <table id="ingredientsTable">
-      <thead>
-        <tr>
-          <th>Ingredient</th>
-          <th>Unit</th>
-          <th>Unit Cost</th>
-          <th>Quantity</th>
-          <th>Converted Qty</th>
-          <th>Total Cost</th>
-        </tr>
-      </thead>
-      <tbody id="ingredientsBody"></tbody>
-    </table>
-    <button onclick="addIngredientRow()">+ Add Ingredient</button>
-  </section>
+    <section class="pricing">
+      <label>Estimated Sale Price: <input type="number" id="estSalePrice" /></label>
+      <label>Target Margin (%): <input type="number" id="targetMargin" value="60" /></label>
+      <p>Auto-Suggested Price: <span id="autoSuggest">₱0.00</span></p>
+    </section>
 
-  <section>
-    <h2>Sub-Recipes</h2>
-    <table id="subRecipesTable">
-      <thead>
-        <tr>
-          <th>Sub-Recipe</th>
-          <th>Unit</th>
-          <th>Unit Cost</th>
-          <th>Quantity</th>
-          <th>Total Cost</th>
-        </tr>
-      </thead>
-      <tbody id="subRecipesBody"></tbody>
-    </table>
-    <button onclick="addSubRecipeRow()">+ Add Sub-Recipe</button>
-  </section>
-
-  <section>
-    <h2>Overhead & Cost Summary</h2>
-    <div class="summary">
-      <label>Labor Cost: <input type="number" id="laborCost" value="0" onchange="updateTotals()"></label>
-      <label>Utilities: <input type="number" id="utilitiesCost" value="0" onchange="updateTotals()"></label>
-      <label>Packaging: <input type="number" id="packagingCost" value="0" onchange="updateTotals()"></label>
-      <label>Yield (pcs): <input type="number" id="yieldCount" value="1" onchange="updateTotals()"></label>
-      <label>Profit per Portion: <input type="number" id="profitPerPortion" value="0" onchange="updateTotals()"></label>
-    </div>
-
-    <div class="result">
+    <section class="results">
       <p>Total Cost: ₱<span id="totalCost">0.00</span></p>
-      <p>Cost per Portion: ₱<span id="costPerPortion">0.00</span></p>
-      <p><strong>Suggested Selling Price: ₱<span id="suggestedPrice">0.00</span></strong></p>
-    </div>
-  </section>
+      <p>Cost Margin: <span id="costMargin">0%</span></p>
+      <p>Net Profit: ₱<span id="netProfit">0.00</span></p>
+      <p>VAT (12%): ₱<span id="vatAmount">0.00</span></p>
+      <p>Price excl. VAT: ₱<span id="vatExcluded">0.00</span></p>
+      <p>Discount (20%): ₱<span id="discountValue">0.00</span></p>
+      <p>Discounted Price: ₱<span id="discountedPrice">0.00</span></p>
+      <p>Profit After Discount: ₱<span id="profitAfterDiscount">0.00</span></p>
+      <p>Profit Difference: ₱<span id="profitDifference">0.00</span></p>
+    </section>
 
-  <section class="actions">
-    <button onclick="exportToCSV()">Export to CSV</button>
-    <button onclick="window.print()">Print as PDF</button>
-  </section>
+    <section class="chart-section">
+      <canvas id="pieChart" width="300" height="300"></canvas>
+    </section>
+
+    <div class="buttons">
+      <button onclick="resetAll()">Reset All</button>
+      <button onclick="saveToLocal()">Save</button>
+      <button onclick="loadFromLocal()">Load</button>
+      <button onclick="exportPDF()">Export to PDF</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
