@@ -8,6 +8,18 @@ let subRecipes = [];
 function createRow(cells) {
   const row = document.createElement('tr');
   cells.forEach(cell => row.appendChild(cell));
+
+  const deleteCell = document.createElement('td');
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = '🗑';
+  deleteBtn.onclick = () => {
+    row.remove();
+    updateTotals();
+  };
+
+  deleteCell.appendChild(deleteBtn);
+  row.appendChild(deleteCell);
+
   return row;
 }
 
@@ -89,7 +101,7 @@ function updateTotals() {
   const profit = parseFloat(document.getElementById('profitPerPortion').value) || 0;
 
   const totalCost = ingredientTotal + subRecipeTotal + labor + utilities + packaging;
-  const costPerPortion = totalCost / yieldCount;
+  const costPerPortion = yieldCount && yieldCount > 0 ? totalCost / yieldCount : 0;
   const suggestedPrice = costPerPortion + profit;
 
   document.getElementById('totalCost').textContent = totalCost.toFixed(2);
@@ -180,6 +192,12 @@ function resetAll() {
   document.getElementById("photoPreview").innerHTML = "";
   dishImageBase64 = "";
   if (window.pieChart) window.pieChart.destroy();
+
+  // Clear and reset tables
+  document.getElementById('ingredientsBody').innerHTML = "";
+  document.getElementById('subRecipesBody').innerHTML = "";
+  addIngredientRow();
+  addSubRecipeRow();
 }
 
 function saveToLocal() {
@@ -188,7 +206,19 @@ function saveToLocal() {
     name: document.getElementById("dishName").value,
     price: document.getElementById("estSalePrice").value,
     margin: document.getElementById("targetMargin").value,
-    image: dishImageBase64
+    image: dishImageBase64,
+    ingredients: [...document.querySelectorAll('#ingredientsBody tr')].map(row => ({
+      name: row.cells[0].querySelector('input')?.value || '',
+      unit: row.cells[1].querySelector('input')?.value || '',
+      cost: row.cells[2].querySelector('input')?.value || '0',
+      qty: row.cells[3].querySelector('input')?.value || '0'
+    })),
+    subRecipes: [...document.querySelectorAll('#subRecipesBody tr')].map(row => ({
+      name: row.cells[0].querySelector('input')?.value || '',
+      unit: row.cells[1].querySelector('input')?.value || '',
+      cost: row.cells[2].querySelector('input')?.value || '0',
+      qty: row.cells[3].querySelector('input')?.value || '0'
+    }))
   };
   localStorage.setItem("foodCostingData", JSON.stringify(data));
   alert("Data saved!");
@@ -197,14 +227,23 @@ function saveToLocal() {
 function loadFromLocal() {
   const saved = JSON.parse(localStorage.getItem("foodCostingData"));
   if (!saved) return alert("No saved data found.");
+
   document.getElementById("dishDate").value = saved.date;
   document.getElementById("dishName").value = saved.name;
   document.getElementById("estSalePrice").value = saved.price;
   document.getElementById("targetMargin").value = saved.margin;
+  
   if (saved.image) {
     dishImageBase64 = saved.image;
     document.getElementById("photoPreview").innerHTML = `<img src="${saved.image}" alt="Saved Dish" />`;
   }
+
+  document.getElementById('ingredientsBody').innerHTML = "";
+  (saved.ingredients || []).forEach(addIngredientRow);
+
+  document.getElementById('subRecipesBody').innerHTML = "";
+  (saved.subRecipes || []).forEach(addSubRecipeRow);
+
   updateDishSummary();
 }
 
