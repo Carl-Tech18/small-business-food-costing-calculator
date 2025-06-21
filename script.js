@@ -79,7 +79,7 @@ function applyBatchScaling() {
 function updateTotals() {
   let ingredientTotal = 0;
   let subRecipeTotal = 0;
-  const scale = getValidNumber(document.getElementById('batchScale').value) || 1;
+  const scale = getValidNumber(document.getElementById('batchScale'), 1);
 
   const ingredientRows = document.getElementById('ingredientsBody').rows;
   [...ingredientRows].forEach(row => {
@@ -99,11 +99,11 @@ function updateTotals() {
     subRecipeTotal += total;
   });
 
-  const labor = getValidNumber(document.getElementById('laborCost')
-  const utilities = getValidNumber(document.getElementById('utilitiesCost')
-  const packaging = getValidNumber(document.getElementById('packagingCost')
-  const yieldCount = getValidNumber(document.getElementById('yieldCount')
-  const profit = getValidNumber(document.getElementById('profitPerPortion')
+  const labor = getValidNumber(document.getElementById('laborCost'));
+  const utilities = getValidNumber(document.getElementById('utilitiesCost'));
+  const packaging = getValidNumber(document.getElementById('packagingCost'));
+  const yieldCount = getValidNumber(document.getElementById('yieldCount'));
+  const profit = getValidNumber(document.getElementById('profitPerPortion'));
 
   const totalCost = ingredientTotal + subRecipeTotal + labor + utilities + packaging;
   const costPerPortion = yieldCount && yieldCount > 0 ? totalCost / yieldCount : 0;
@@ -168,14 +168,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dishPhotoInput = document.getElementById("dishPhoto");
   
-  ["estSalePrice", "targetMargin"].forEach(id => {function drawPieChart(totalCost) {
+function drawPieChart(totalCost) {
   const estPrice = getValidNumber(document.getElementById("estSalePrice"));
   const profit = estPrice - totalCost;
   const ctx = document.getElementById("pieChart").getContext("2d");
-  if (!window.Chart) return; // Chart.js not loaded
+  if (!window.Chart) return;
   if (window.pieChart) window.pieChart.destroy();
   window.pieChart = new Chart(ctx, {
-    document.getElementById(id).addEventListener("input", updateDishSummary);
+    type: "pie",
+    data: {
+      labels: ["Cost", "Profit"],
+      datasets: [
+        {
+          data: [totalCost, profit > 0 ? profit : 0],
+          backgroundColor: ["#f44336", "#4caf50"]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom" }
+      }
+    }
+  });
+}
+// Then, in DOMContentLoaded:
+["estSalePrice", "targetMargin"].forEach(id => {
+  document.getElementById(id).addEventListener("input", updateDishSummary);
   });
 });
 
@@ -184,7 +204,8 @@ function resetAll() {
   [
     "totalCost", "costMargin", "netProfit", "vatAmount", "vatExcluded",
     "discountValue", "discountedPrice", "profitAfterDiscount", "profitDifference"
-  ].forEach(id => document.getElemendishPhotoInput.addEventListener("change", function () {
+  ]
+    .forEach(id => document.getElemendishPhotoInput.addEventListener("change", function () {
   const file = this.files[0];
   if (!file) return;
 
