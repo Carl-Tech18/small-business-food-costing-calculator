@@ -180,19 +180,18 @@ function drawPieChart() {
 
   if (window.pieChart) window.pieChart.destroy();
   window.pieChart = new Chart(ctx, {
-    type: 'pie',
-    data:
-      labels: ['Ingredients', 'Sub-Recipes', 'Overhead'],
-      datasets: [{
-        data: data,
-        backgroundColor: ['#4CAF50', '#FF9800', '#2196F3']
-      }]
+  type: 'pie',
+  data: {
+    labels: ['Ingredients', 'Sub-Recipes', 'Overhead'],
+    datasets: [{
+      data: data,
+      backgroundColor: ['#4CAF50', '#FF9800', '#2196F3']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: { position: 'bottom' }
     }
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'bottom' }
-      }
-    }
-  });
-}
+  }
+});
