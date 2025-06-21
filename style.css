@@ -1,58 +1,87 @@
 body {
-    font-family: Arial, sans-serif;
-    padding: 2rem;
-    background-color: #f4f4f9;
-    color: #333;
+  font-family: Arial, sans-serif;
+  margin: 2rem;
+  background-color: #f9f9f9;
+  color: #333;
 }
 
-h1 {
-    text-align: center;
+h1, h2 {
+  text-align: center;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.scaling {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+input[type="number"], input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
 }
 
 th, td {
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    text-align: center;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
 }
 
 th {
-    background-color: #dcedc8;
-}
-
-td input {
-    width: 100%;
-    padding: 0.4rem;
-    text-align: center;
-}
-
-.summary {
-    max-width: 500px;
-    margin: auto;
-}
-
-.summary div {
-    margin: 0.5rem 0;
+  background-color: #c8e6c9;
 }
 
 .summary label {
-    display: inline-block;
-    width: 60%;
+  display: block;
+  margin: 0.5rem 0;
 }
 
 .summary input {
-    width: 35%;
-    text-align: right;
+  width: 200px;
+  margin-left: 0.5rem;
 }
 
-.total {
-    font-weight: bold;
-    background-color: #c8e6c9;
-    padding: 1rem;
-    text-align: center;
+.result {
+  background-color: #e8f5e9;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.actions {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+@media print {
+  button, .actions {
+    display: none;
+  }
+  body {
+    background-color: white;
+  }
 }
