@@ -1,0 +1,58 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+th {
+    background-color: #dcedc8;
+}
+
+td input {
+    width: 100%;
+    padding: 0.4rem;
+    text-align: center;
+}
+
+.summary {
+    max-width: 500px;
+    margin: auto;
+}
+
+.summary div {
+    margin: 0.5rem 0;
+}
+
+.summary label {
+    display: inline-block;
+    width: 60%;
+}
+
+.summary input {
+    width: 35%;
+    text-align: right;
+}
+
+.total {
+    font-weight: bold;
+    background-color: #c8e6c9;
+    padding: 1rem;
+    text-align: center;
+}
