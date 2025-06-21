@@ -197,39 +197,26 @@ function drawPieChart(totalCost) {
 ["estSalePrice", "targetMargin"].forEach(id => {
   document.getElementById(id).addEventListener("input", updateDishSummary);
   });
+
+  document.getElementById('ingredientsBody').addEventListener('input', function (e) {
+  if (e.target.tagName === "INPUT") applyBatchScaling();
 });
+  
+document.getElementById('batchScale').addEventListener('input', applyBatchScaling);
 
 function resetAll() {
   document.querySelectorAll("input").forEach(i => (i.value = ""));
-  [
-    "totalCost", "costMargin", "netProfit", "vatAmount", "vatExcluded",
-    "discountValue", "discountedPrice", "profitAfterDiscount", "profitDifference"
-  ]
-    .forEach(id => document.getElemendishPhotoInput.addEventListener("change", function () {
-  const file = this.files[0];
-  if (!file) return;
-
-  // Extra safety: check file type
-  if (!file.type.startsWith("image/")) {
-    alert("Please upload a valid image file.");
-    this.value = ""; // reset the input field
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    dishImageBase64 = e.target.result;
-    document.getElementById("photoPreview").innerHTML = `<img src="${dishImageBase64}" alt="Dish Photo" />`;
-  };
-  reader.readAsDataURL(file);
-});tById(id).textContent = "0.00");
+  
   document.getElementById("autoSuggest").textContent = "₱0.00";
   document.getElementById("photoPreview").innerHTML = "";
   dishImageBase64 = "";
   if (window.pieChart) window.pieChart.destroy();
 
   // Clear and reset tables
-  document.getElementById('ingredientsBody').innerHTML = "";
+  documen[
+  "totalCost", "costMargin", "netProfit", "vatAmount", "vatExcluded",
+  "discountValue", "discountedPrice", "profitAfterDiscount", "profitDifference"
+].forEach(id => document.getElementById(id).textContent = "0.00");t.getElementById('ingredientsBody').innerHTML = "";
   document.getElementById('subRecipesBody').innerHTML = "";
   addIngredientRow();
   addSubRecipeRow();
