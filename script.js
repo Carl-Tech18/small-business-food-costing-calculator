@@ -1,10 +1,6 @@
 // Global variables
 let dishImageBase64 = "";
 
-// Ingredient and sub-recipe arrays
-let ingredients = [];
-let subRecipes = [];
-
 function createRow(cells) {
   const row = document.createElement('tr');
   cells.forEach(cell => row.appendChild(cell));
@@ -138,13 +134,7 @@ function updateDishSummary() {
   drawPieChart(totalCost);
 }
 
-function drawPieChart(totalCost) {
-  const estPrice = parseFloat(document.getElementById("estSalePrice").value) || 0;
-  const profit = estPrice - totalCost;
 
-  const ctx = document.getElementById("pieChart").getContext("2d");
-  if (window.pieChart) window.pieChart.destroy();
-  window.pieChart = new Chart(ctx, {
     type: "pie",
     data: {
       labels: ["Cost", "Profit"],
@@ -169,25 +159,42 @@ document.addEventListener('DOMContentLoaded', () => {
   addSubRecipeRow();
 
   const dishPhotoInput = document.getElementById("dishPhoto");
-  dishPhotoInput.addEventListener("change", function () {
-    const file = this.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      dishImageBase64 = e.target.result;
-      document.getElementById("photoPreview").innerHTML = `<img src="${dishImageBase64}" alt="Dish Photo" />`;
-    };
-    reader.readAsDataURL(file);
-  });
+  
 
-  ["estSalePrice", "targetMargin"].forEach(id => {
+  ["estSalePrice", "targetMargin"].forEach(id => {function drawPieChart(totalCost) {
+  const estPrice = getValidNumber(document.getElementById("estSalePrice"));
+  const profit = estPrice - totalCost;
+  const ctx = document.getElementById("pieChart").getContext("2d");
+  if (!window.Chart) return; // Chart.js not loaded
+  if (window.pieChart) window.pieChart.destroy();
+  window.pieChart = new Chart(ctx, {
     document.getElementById(id).addEventListener("input", updateDishSummary);
   });
 });
 
 function resetAll() {
   document.querySelectorAll("input").forEach(i => (i.value = ""));
-  document.querySelectorAll("span").forEach(s => (s.textContent = "0.00"));
+  [
+    "totalCost", "costMargin", "netProfit", "vatAmount", "vatExcluded",
+    "discountValue", "discountedPrice", "profitAfterDiscount", "profitDifference"
+  ].forEach(id => document.getElemendishPhotoInput.addEventListener("change", function () {
+  const file = this.files[0];
+  if (!file) return;
+
+  // Extra safety: check file type
+  if (!file.type.startsWith("image/")) {
+    alert("Please upload a valid image file.");
+    this.value = ""; // reset the input field
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    dishImageBase64 = e.target.result;
+    document.getElementById("photoPreview").innerHTML = `<img src="${dishImageBase64}" alt="Dish Photo" />`;
+  };
+  reader.readAsDataURL(file);
+});tById(id).textContent = "0.00");
   document.getElementById("autoSuggest").textContent = "₱0.00";
   document.getElementById("photoPreview").innerHTML = "";
   dishImageBase64 = "";
@@ -232,26 +239,54 @@ function loadFromLocal() {
   document.getElementById("dishName").value = saved.name;
   document.getElementById("estSalePrice").value = saved.price;
   document.getElementById("targetMargin").value = saved.margin;
-  
+
   if (saved.image) {
     dishImageBase64 = saved.image;
     document.getElementById("photoPreview").innerHTML = `<img src="${saved.image}" alt="Saved Dish" />`;
   }
 
-  document.getElementById('ingredientsBody').innerHTML = "";
-  (saved.ingredients || []).forEach(addIngredientRow);
+  // Load ingredients
+  const ingredientsBody = document.getElementById('ingredientsBody');
+  ingredientsBody.innerHTML = "";
+  (saved.ingredients || []).forEach(obj => {
+    const row = createRow([
+      createInputCell('text', obj.name),
+      createInputCell('text', obj.unit),
+      createInputCell('number', obj.cost),
+      createInputCell('number', obj.qty),
+      createInputCell('text', '', () => {}),
+      createInputCell('text', '', () => {})
+    ]);
+    ingredientsBody.appendChild(row);
+  });
 
-  document.getElementById('subRecipesBody').innerHTML = "";
-  (saved.subRecipes || []).forEach(addSubRecipeRow);
+  // Load sub-recipes
+  const subRecipesBody = document.getElementById('subRecipesBody');
+  subRecipesBody.innerHTML = "";
+  (saved.subRecipes || []).forEach(obj => {
+    const row = createRow([
+      createInputCell('text', obj.name),
+      createInputCell('text', obj.unit),
+      createInputCell('number', obj.cost),
+      createInputCell('number', obj.qty),
+      createInputCell('text', '', () => {})
+    ]);
+    subRecipesBody.appendChild(row);
+  });
 
+  updateTotals(); // Recalculate everything after loading
   updateDishSummary();
 }
 
 function exportPDF() {
-  const container = document.querySelector(".container").cloneNode(true);
-  if (dishImageBase64) {
-    const img = container.querySelector("#photoPreview img");
-    if (img) img.src = dishImageBase64;
+  try {
+    const container = document.querySelector(".container").cloneNode(true);
+    if (dishImageBase64) {
+      const img = container.querySelector("#photoPreview img");
+      if (img) img.src = dishImageBase64;
+    }
+    html2pdf().from(container).save("food-costing-report.pdf");
+  } catch (e) {
+    alert("Failed to export PDF: " + e.message);
   }
-  html2pdf().from(container).save("food-costing-report.pdf");
 }
