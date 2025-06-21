@@ -66,12 +66,12 @@ function addSubRecipeRow() {
 }
 
 function applyBatchScaling() {
-  const scale = getValidNumber(document.getElementById('batchScale').value) || 1;
+  const scale = getValidNumber(document.getElementById('batchScale'), 1);
   const tbody = document.getElementById('ingredientsBody');
   [...tbody.rows].forEach(row => {
     const qtyInput = row.cells[3].querySelector('input');
     const converted = row.cells[4];
-    converted.textContent = (parseFloat(qtyInput.value) * scale).toFixed(2);
+    converted.textContent = (getValidNumber(qtyInput) * scale).toFixed(2);
   });
   updateTotals();
 }
@@ -79,7 +79,7 @@ function applyBatchScaling() {
 function updateTotals() {
   let ingredientTotal = 0;
   let subRecipeTotal = 0;
-  const scale = parseFloat(document.getElementById('batchScale').value) || 1;
+  const scale = getValidNumber(document.getElementById('batchScale').value) || 1;
 
   const ingredientRows = document.getElementById('ingredientsBody').rows;
   [...ingredientRows].forEach(row => {
@@ -99,11 +99,11 @@ function updateTotals() {
     subRecipeTotal += total;
   });
 
-  const labor = getValidNumber(document.getElementById('laborCost').value) || 0;
-  const utilities = getValidNumber(document.getElementById('utilitiesCost').value) || 0;
-  const packaging = getValidNumber(document.getElementById('packagingCost').value) || 0;
-  const yieldCount = getValidNumber(document.getElementById('yieldCount').value) || 1;
-  const profit = getValidNumber(document.getElementById('profitPerPortion').value) || 0;
+  const labor = getValidNumber(document.getElementById('laborCost')
+  const utilities = getValidNumber(document.getElementById('utilitiesCost')
+  const packaging = getValidNumber(document.getElementById('packagingCost')
+  const yieldCount = getValidNumber(document.getElementById('yieldCount')
+  const profit = getValidNumber(document.getElementById('profitPerPortion')
 
   const totalCost = ingredientTotal + subRecipeTotal + labor + utilities + packaging;
   const costPerPortion = yieldCount && yieldCount > 0 ? totalCost / yieldCount : 0;
@@ -114,9 +114,9 @@ function updateTotals() {
 }
 
 function updateDishSummary() {
-  const salePrice = getValidNumber(document.getElementById("estSalePrice").value) || 0;
-  const totalCost = getValidNumber(document.getElementById("totalCost").textContent) || 0;
-  const targetMargin = getValidNumber(document.getElementById("targetMargin").value) || 0;
+  const salePrice = getValidNumber(document.getElementById("estSalePrice"));
+  const totalCost = parseFloat(document.getElementById("totalCost").textContent) || 0;
+  const targetMargin = getValidNumber(document.getElementById("targetMargin"));
 
   const profit = salePrice - totalCost;
   const margin = salePrice > 0 ? ((profit / salePrice) * 100).toFixed(2) : 0;
