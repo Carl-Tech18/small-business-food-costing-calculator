@@ -1,4 +1,13 @@
 // Global variables
+function getValidNumber(input, defaultValue = 0) {
+  let value = parseFloat(input.value);
+  if (isNaN(value) || value < 0) {
+    value = defaultValue;
+    input.value = value; // Optional: force input to valid value
+  }
+  return value;
+}
+
 let dishImageBase64 = "";
 
 function createRow(cells) {
@@ -57,7 +66,7 @@ function addSubRecipeRow() {
 }
 
 function applyBatchScaling() {
-  const scale = parseFloat(document.getElementById('batchScale').value) || 1;
+  const scale = getValidNumber(document.getElementById('batchScale').value) || 1;
   const tbody = document.getElementById('ingredientsBody');
   [...tbody.rows].forEach(row => {
     const qtyInput = row.cells[3].querySelector('input');
@@ -74,8 +83,8 @@ function updateTotals() {
 
   const ingredientRows = document.getElementById('ingredientsBody').rows;
   [...ingredientRows].forEach(row => {
-    const cost = parseFloat(row.cells[2].querySelector('input').value) || 0;
-    const qty = parseFloat(row.cells[3].querySelector('input').value) || 0;
+    const cost = getValidNumber(row.cells[2].querySelector('input'));
+    const qty = getValidNumber(row.cells[3].querySelector('input'));
     const total = cost * qty * scale;
     row.cells[5].textContent = total.toFixed(2);
     ingredientTotal += total;
@@ -83,18 +92,18 @@ function updateTotals() {
 
   const subRecipeRows = document.getElementById('subRecipesBody').rows;
   [...subRecipeRows].forEach(row => {
-    const cost = parseFloat(row.cells[2].querySelector('input').value) || 0;
-    const qty = parseFloat(row.cells[3].querySelector('input').value) || 0;
+    const cost = getValidNumber(row.cells[2].querySelector('input'));
+    const qty = getValidNumber(row.cells[3].querySelector('input'));
     const total = cost * qty;
     row.cells[4].textContent = total.toFixed(2);
     subRecipeTotal += total;
   });
 
-  const labor = parseFloat(document.getElementById('laborCost').value) || 0;
-  const utilities = parseFloat(document.getElementById('utilitiesCost').value) || 0;
-  const packaging = parseFloat(document.getElementById('packagingCost').value) || 0;
-  const yieldCount = parseFloat(document.getElementById('yieldCount').value) || 1;
-  const profit = parseFloat(document.getElementById('profitPerPortion').value) || 0;
+  const labor = getValidNumber(document.getElementById('laborCost').value) || 0;
+  const utilities = getValidNumber(document.getElementById('utilitiesCost').value) || 0;
+  const packaging = getValidNumber(document.getElementById('packagingCost').value) || 0;
+  const yieldCount = getValidNumber(document.getElementById('yieldCount').value) || 1;
+  const profit = getValidNumber(document.getElementById('profitPerPortion').value) || 0;
 
   const totalCost = ingredientTotal + subRecipeTotal + labor + utilities + packaging;
   const costPerPortion = yieldCount && yieldCount > 0 ? totalCost / yieldCount : 0;
@@ -105,9 +114,9 @@ function updateTotals() {
 }
 
 function updateDishSummary() {
-  const salePrice = parseFloat(document.getElementById("estSalePrice").value) || 0;
-  const totalCost = parseFloat(document.getElementById("totalCost").textContent) || 0;
-  const targetMargin = parseFloat(document.getElementById("targetMargin").value) || 0;
+  const salePrice = getValidNumber(document.getElementById("estSalePrice").value) || 0;
+  const totalCost = getValidNumber(document.getElementById("totalCost").textContent) || 0;
+  const targetMargin = getValidNumber(document.getElementById("targetMargin").value) || 0;
 
   const profit = salePrice - totalCost;
   const margin = salePrice > 0 ? ((profit / salePrice) * 100).toFixed(2) : 0;
@@ -134,7 +143,6 @@ function updateDishSummary() {
   drawPieChart(totalCost);
 }
 
-
     type: "pie",
     data: {
       labels: ["Cost", "Profit"],
@@ -160,7 +168,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const dishPhotoInput = document.getElementById("dishPhoto");
   
-
   ["estSalePrice", "targetMargin"].forEach(id => {function drawPieChart(totalCost) {
   const estPrice = getValidNumber(document.getElementById("estSalePrice"));
   const profit = estPrice - totalCost;
