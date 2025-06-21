@@ -13,7 +13,8 @@
     <h1>Small Business Food Costing Calculator</h1>
 
     <section class="dish-meta">
-      <label>Date: <input type="date" id="dishDate" /></label>
+      <label for="dishDate">Date:</label>
+      <input type="date" id="dishDate" aria-label="Date" /></label>
       <label>Dish Name: <input type="text" id="dishName" /></label>
       <label>Upload Dish Photo: <input type="file" id="dishPhoto" accept="image/*" /></label>
       <div id="photoPreview"></div>
@@ -91,6 +92,7 @@
     </section>
 
     <div class="buttons">
+      <button onclick="addIngredientRow()" aria-label="Add Ingredient">Add Ingredient</button>
       <button onclick="resetAll()">Reset All</button>
       <button onclick="saveToLocal()">Save</button>
       <button onclick="loadFromLocal()">Load</button>
