@@ -81,7 +81,6 @@ th {
   button, .actions {
     display: none;
   }
-}
   body {
     background-color: white;
   }
@@ -110,4 +109,5 @@ th {
 #cost-chart canvas {
   margin-top: 10px;
   max-width: 100%;
+}
 }
