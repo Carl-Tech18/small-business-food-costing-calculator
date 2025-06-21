@@ -14,7 +14,7 @@
 
     <section class="dish-meta">
       <label for="dishDate">Date:</label>
-      <input type="date" id="dishDate" aria-label="Date" /></label>
+      <input type="date" id="dishDate" aria-label="Date" />
       <label>Dish Name: <input type="text" id="dishName" /></label>
       <label>Upload Dish Photo: <input type="file" id="dishPhoto" accept="image/*" /></label>
       <div id="photoPreview"></div>
@@ -37,7 +37,7 @@
         </thead>
         <tbody id="ingredientsBody"></tbody>
       </table>
-      <button onclick="addIngredientRow()">Add Ingredient</button>
+      <button id="addIngredientBtn">Add Ingredient</button>
     </section>
 
     <!-- Sub-Recipes Table -->
@@ -51,11 +51,12 @@
             <th>Unit Cost</th>
             <th>Qty</th>
             <th>Total Cost</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody id="subRecipesBody"></tbody>
       </table>
-      <button onclick="addSubRecipeRow()">Add Sub-Recipe</button>
+      <button id="addSubRecipeBtn">Add Sub-Recipe</button>
     </section>
 
     <!-- Overhead Costs -->
@@ -66,7 +67,7 @@
       <label>Packaging Cost: <input type="number" id="packagingCost" /></label>
       <label>Yield (Portions): <input type="number" id="yieldCount" /></label>
       <label>Profit Per Portion: <input type="number" id="profitPerPortion" /></label>
-      <label>Batch Scale: <input type="number" id="batchScale" value="1" onchange="applyBatchScaling()" /></label>
+      <label>Batch Scale: <input type="number" id="batchScale" value="1" /></label>
     </section>
 
     <section class="pricing">
@@ -92,11 +93,11 @@
     </section>
 
     <div class="buttons">
-      <button onclick="addIngredientRow()" aria-label="Add Ingredient">Add Ingredient</button>
-      <button onclick="resetAll()">Reset All</button>
-      <button onclick="saveToLocal()">Save</button>
-      <button onclick="loadFromLocal()">Load</button>
-      <button onclick="exportPDF()">Export to PDF</button>
+      <button id="addIngredientBtn2" aria-label="Add Ingredient">Add Ingredient</button>
+      <button id="resetAllBtn">Reset All</button>
+      <button id="saveToLocalBtn">Save</button>
+      <button id="loadFromLocalBtn">Load</button>
+      <button id="exportPDFBtn">Export to PDF</button>
     </div>
   </div>
 
