@@ -5,10 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food Costing Calculator v2.0</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <h1>Food Costing Calculator v2.0</h1>
+  
+  <section id="dish-summary">
+  <h2>Dish Summary</h2>
+  <label>Date: <input type="date" id="dishDate"></label>
+  <label>Dish Name: <input type="text" id="dishName"></label>
+  <label>Estimated Sale Price: ₱<input type="number" id="estSalePrice" step="0.01" onchange="updateDishSummary()"></label>
+  <p>Total Cost: ₱<span id="summaryTotalCost">0.00</span></p>
+  <p>Cost Margin: <span id="costMargin">0%</span></p>
+  <p>Net Profit: ₱<span id="netProfit">0.00</span></p>
+</section>
 
+<section id="cost-chart">
+  <h2>Cost Distribution</h2>
+  <canvas id="pieChart" width="250" height="250"></canvas>
+</section>
+
+<section id="vat-discount">
+  <h2>VAT & Discounts</h2>
+  <label>Target Margin (%): <input type="number" id="targetMargin" value="60" onchange="updateDishSummary()"></label>
+  <p>VAT Excluded (12%): ₱<span id="vatExcluded">0.00</span></p>
+  <p>VAT Amount: ₱<span id="vatAmount">0.00</span></p>
+  <p>Discount (20%): ₱<span id="discountValue">0.00</span></p>
+  <p>Discounted Price: ₱<span id="discountedPrice">0.00</span></p>
+  <p>Profit After Discount: ₱<span id="profitAfterDiscount">0.00</span></p>
+  <p>Difference vs Regular Profit: ₱<span id="profitDifference">0.00</span></p>
+</section>
+  
   <section class="scaling">
     <label for="batchScale">Batch Multiplier:</label>
     <input type="number" id="batchScale" value="1" step="0.1" onchange="applyBatchScaling()">
