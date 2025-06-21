@@ -84,4 +84,29 @@ th {
   body {
     background-color: white;
   }
+  
+#dish-summary,
+#cost-chart,
+#vat-discount {
+  border: 2px dashed #4CAF50;
+  padding: 16px;
+  margin: 10px auto;
+  background: #f4fff4;
+  border-radius: 12px;
+  max-width: 600px;
+}
+
+#dish-summary label,
+#vat-discount label {
+  display: block;
+  margin: 8px 0;
+}
+
+#cost-chart {
+  text-align: center;
+}
+
+#cost-chart canvas {
+  margin-top: 10px;
+  max-width: 100%;
 }
