@@ -277,8 +277,14 @@ document.addEventListener('DOMContentLoaded', () => {
   addIngredientRow();
   addSubRecipeRow();
 
+  console.log("DOM fully loaded");
+  
   // Button event listeners (all platforms, including Android)
-  document.getElementById('addIngredientBtn').addEventListener('click', addIngredientRow);
+  document.getElementById('addIngredientBtn').addEventListener('click', function() {
+  console.log('Button clicked');
+  addIngredientRow();
+});
+  
   document.getElementById('addSubRecipeBtn').addEventListener('click', addSubRecipeRow);
   document.getElementById('addIngredientBtn2').addEventListener('click', addIngredientRow);
 
